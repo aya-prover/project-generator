@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
 import java.util.jar.JarFile;
 
@@ -34,24 +32,30 @@ public class Main {
       jar.close();
     } else { // Run with IDE
       final var url = myClazz.getResource("/" + path);
-      if (url != null) {
-        try {
-          final var apps = new File(url.toURI());
-          for (var app : Objects.requireNonNull(apps.listFiles())) {
-            try (var inS = new FileInputStream(app);
-                 var outS = Files.newOutputStream(out.resolve(app.getPath()), StandardOpenOption.CREATE)) {
+      if (url != null) try {
+        var root = Paths.get(url.toURI());
+        Files.walkFileTree(root, new SimpleFileVisitor<>() {
+          @Override public FileVisitResult
+          visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            var resolve = out.resolve(root.relativize(file));
+            var parent = resolve.getParent();
+            if (Files.notExists(parent)) Files.createDirectories(parent);
+            try (var inS = Files.newInputStream(file);
+                 var outS = Files.newOutputStream(resolve, StandardOpenOption.CREATE)) {
               inS.transferTo(outS);
             }
+            return FileVisitResult.CONTINUE;
           }
-        } catch (URISyntaxException ex) {
-          // never happens
-        }
+        });
+      } catch (URISyntaxException ex) {
+        // never happens
       }
     }
   }
 
   public static void main(String... args) throws IOException {
-    var path = Paths.get("out");
+    var path = Paths.get("output");
     if (Files.notExists(path)) Files.createDirectories(path);
+    new Main().write("template", path);
   }
 }
