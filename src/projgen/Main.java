@@ -16,14 +16,13 @@ public class Main {
   public static final String PREFIX = "Bot";
 
   public static void main(String... args) throws IOException {
-    var path = Paths.get("output");
     var ui = new UI();
     var frame = new JFrame("Project Generator");
     frame.add(ui.getRoot());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    ui.configure(map -> {
+    ui.configure((out, map) -> {
       try {
-        doGen(path, map);
+        doGen(Paths.get(out), map);
         frame.setVisible(false);
       } catch (IOException e) {
         throw new RuntimeException(e);

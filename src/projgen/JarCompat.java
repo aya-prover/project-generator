@@ -43,9 +43,9 @@ public interface JarCompat {
           applyTemplate = true;
           resolve = parent.resolve(fileName.replace(Main.KALA, ""));
         }
-        if (fileName.startsWith("Bot")) {
+        if (fileName.startsWith(Main.PREFIX)) {
           applyTemplate = true;
-          resolve = parent.resolve(fileName.replace("Bot", pref));
+          resolve = parent.resolve(fileName.replace(Main.PREFIX, pref));
         }
         return new Preprocess(resolve, applyTemplate);
       }

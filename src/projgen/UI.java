@@ -1,10 +1,8 @@
 package projgen;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import static projgen.Main.toPkgName;
 
@@ -21,10 +19,10 @@ public class UI {
     return root;
   }
 
-  public void configure(Consumer<Map<String, CharSequence>> apply) {
+  public void configure(BiConsumer<String, Map<String, CharSequence>> apply) {
     create.addActionListener(e -> {
       var projNameText = projName.getText().toLowerCase();
-      apply.accept(Map.ofEntries(
+      apply.accept(outputPath.getText(), Map.ofEntries(
           Map.entry("javaVersion", javaVersion.getText()),
           Map.entry("classPrefix", classPrefix.getText()),
           Map.entry("project", projNameText),
