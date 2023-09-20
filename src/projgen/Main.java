@@ -2,6 +2,7 @@ package projgen;
 
 import kala.template.TemplateEngine;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,22 +17,25 @@ public class Main {
 
   public static void main(String... args) throws IOException {
     var path = Paths.get("output");
-    gen(path, "canonical");
-  }
-
-  private static void gen(Path path, String projName) throws IOException {
-    projName = projName.toLowerCase();
-    doGen(path, Map.ofEntries(
-        Map.entry("javaVersion", "17"),
-        Map.entry("classPrefix", "SExpr"),
-        Map.entry("project", projName),
-        Map.entry("package", toPkgName(projName))
-    ));
+    var ui = new UI();
+    var frame = new JFrame("Project Generator");
+    frame.add(ui.getRoot());
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    ui.configure(map -> {
+      try {
+        doGen(path, map);
+        frame.setVisible(false);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    frame.pack();
+    frame.setVisible(true);
   }
 
   private static void doGen(
       Path path,
-      Map<String, Object> map
+      Map<String, CharSequence> map
   ) throws IOException {
     var templateEngine = TemplateEngine.builder()
         .tag("{| ", " |}")
@@ -50,7 +54,7 @@ public class Main {
     JarCompat.write("java-src", path.resolve(rel), prefix, writer);
   }
 
-  private static CharSequence toPkgName(String projectName) {
+  public static CharSequence toPkgName(String projectName) {
     return projectName.chars()
         .filter(Character::isAlphabetic)
         .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append);
