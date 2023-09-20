@@ -1,17 +1,19 @@
 package projgen;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.jar.JarFile;
 
 public class Main {
   // https://stackoverflow.com/a/20073154/7083401
-  public void write(final String path, Writer out) throws IOException {
+  public void write(final String path, Path out) throws IOException {
     var myClazz = getClass();
     final var jarFile = new File(myClazz.getProtectionDomain().getCodeSource().getLocation().getPath());
 
@@ -22,7 +24,11 @@ public class Main {
         var element = entries.nextElement();
         final var name = element.getName();
         if (name.startsWith(path + "/")) {
-          System.out.println(name);
+          try (var inS = myClazz.getResourceAsStream("/" + name);
+               var outS = Files.newOutputStream(out.resolve(name), StandardOpenOption.CREATE)) {
+            assert inS != null;
+            inS.transferTo(outS);
+          }
         }
       }
       jar.close();
@@ -32,7 +38,10 @@ public class Main {
         try {
           final var apps = new File(url.toURI());
           for (var app : Objects.requireNonNull(apps.listFiles())) {
-            System.out.println(app);
+            try (var inS = new FileInputStream(app);
+                 var outS = Files.newOutputStream(out.resolve(app.getPath()), StandardOpenOption.CREATE)) {
+              inS.transferTo(outS);
+            }
           }
         } catch (URISyntaxException ex) {
           // never happens
