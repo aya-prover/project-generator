@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="projgen:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/projgen_jar</output-path>
+    <root id="root">
+      <element id="archive" name="projgen.jar">
+        <element id="module-output" name="projgen" />
+      </element>
+    </root>
+  </artifact>
+</component>

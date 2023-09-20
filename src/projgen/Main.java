@@ -1,12 +1,10 @@
 package projgen;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Objects;
 import java.util.jar.JarFile;
 
 public class Main {
@@ -21,9 +19,12 @@ public class Main {
       while (entries.hasMoreElements()) {
         var element = entries.nextElement();
         final var name = element.getName();
+        if (element.isDirectory()) continue;
         if (name.startsWith(path + "/")) {
+          var resolve = out.resolve(name);
+          mkdirsDashP(resolve.getParent());
           try (var inS = myClazz.getResourceAsStream("/" + name);
-               var outS = Files.newOutputStream(out.resolve(name), StandardOpenOption.CREATE)) {
+               var outS = Files.newOutputStream(resolve, StandardOpenOption.CREATE)) {
             assert inS != null;
             inS.transferTo(outS);
           }
@@ -35,11 +36,11 @@ public class Main {
       if (url != null) try {
         var root = Paths.get(url.toURI());
         Files.walkFileTree(root, new SimpleFileVisitor<>() {
-          @Override public FileVisitResult
+          @Override
+          public FileVisitResult
           visitFile(Path file, BasicFileAttributes attrs) throws IOException {
             var resolve = out.resolve(root.relativize(file));
-            var parent = resolve.getParent();
-            if (Files.notExists(parent)) Files.createDirectories(parent);
+            mkdirsDashP(resolve.getParent());
             try (var inS = Files.newInputStream(file);
                  var outS = Files.newOutputStream(resolve, StandardOpenOption.CREATE)) {
               inS.transferTo(outS);
@@ -55,7 +56,11 @@ public class Main {
 
   public static void main(String... args) throws IOException {
     var path = Paths.get("output");
-    if (Files.notExists(path)) Files.createDirectories(path);
+    mkdirsDashP(path);
     new Main().write("template", path);
+  }
+
+  private static void mkdirsDashP(Path path) throws IOException {
+    if (Files.notExists(path)) Files.createDirectories(path);
   }
 }
