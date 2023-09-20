@@ -1,4 +1,4 @@
-package org.steeleagle.psi;
+package org.{| package |}.psi;
 
 import com.intellij.psi.DefaultPsiParser;
 import com.intellij.psi.builder.FleetPsiBuilder;
@@ -23,11 +23,11 @@ public record DslParserImpl(@NotNull Reporter reporter) {
 
   private static class DslFleetParser extends DefaultPsiParser {
     public DslFleetParser() {
-      super(new BotParserDefinition());
+      super(new {| classPrefix |}ParserDefinition());
     }
 
-    private static final class BotParserDefinition extends BotParserDefinitionBase {
-      private final @NotNull IFileElementType FILE = new IFileElementType(BotLanguage.INSTANCE) {
+    private static final class {| classPrefix |}ParserDefinition extends {| classPrefix |}ParserDefinitionBase {
+      private final @NotNull IFileElementType FILE = new IFileElementType({| classPrefix |}Language.INSTANCE) {
         @Override public void parse(@NotNull FleetPsiBuilder<?> builder) {
         }
       };

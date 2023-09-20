@@ -10,6 +10,10 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 public class Main {
+
+  public static final String KALA = ".glavo-kala";
+  public static final String PREFIX = "Bot";
+
   public static void main(String... args) throws IOException {
     var path = Paths.get("output");
     gen(path, "canonical");
@@ -33,13 +37,17 @@ public class Main {
         .tag("{| ", " |}")
         .build();
     JarCompat.mkdirsDashP(path);
-    JarCompat.write("template", path, ".glavo-kala", (inS, outS, applyTemplate) -> {
+    JarCompat.IOConsumer writer = (inS, outS, applyTemplate) -> {
       if (!applyTemplate) inS.transferTo(outS);
       else try (var input = new InputStreamReader(inS);
                 var output = new OutputStreamWriter(outS)) {
         templateEngine.process(input, output, map);
       }
-    });
+    };
+    var prefix = map.get("classPrefix").toString();
+    JarCompat.write("template", path, prefix, writer);
+    String rel = "cli/src/main/java/org/" + map.get("package");
+    JarCompat.write("java-src", path.resolve(rel), prefix, writer);
   }
 
   private static CharSequence toPkgName(String projectName) {

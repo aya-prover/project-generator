@@ -24,13 +24,32 @@ public interface JarCompat {
    *
    * @param path relative path in the resource root
    * @param out  output root
-   * @param kala extension of kala-template files. Includes the dot!
-   *             Use a really weird name if you don't want to apply kala-template.
+   * @param pref class name prefix that we need to rename things into
    * @param f    callback for transferring stream content
    */
-  static void write(final String path, Path out, String kala, IOConsumer f) throws IOException {
+  static void write(final String path, Path out, String pref, IOConsumer f) throws IOException {
     var myClazz = JarCompat.class;
     final var jarFile = new File(myClazz.getProtectionDomain().getCodeSource().getLocation().getPath());
+
+    record Preprocess(Path resolve, boolean applyTemplate) {
+    }
+    class $ {
+      Preprocess preprocess(Path resolve) throws IOException {
+        var parent = resolve.getParent();
+        mkdirsDashP(parent);
+        var applyTemplate = false;
+        var fileName = resolve.getFileName().toString();
+        if (fileName.endsWith(Main.KALA)) {
+          applyTemplate = true;
+          resolve = parent.resolve(fileName.replace(Main.KALA, ""));
+        }
+        if (fileName.startsWith("Bot")) {
+          applyTemplate = true;
+          resolve = parent.resolve(fileName.replace("Bot", pref));
+        }
+        return new Preprocess(resolve, applyTemplate);
+      }
+    }
 
     if (jarFile.isFile()) {
       final var jar = new JarFile(jarFile);
@@ -40,7 +59,7 @@ public interface JarCompat {
         final var name = element.getName();
         if (element.isDirectory()) continue;
         if (name.startsWith(path + "/")) {
-          var result = preprocess(kala, out.resolve(name));
+          var result = new $().preprocess(out.resolve(name));
           try (var inS = myClazz.getResourceAsStream("/" + name);
                var outS = Files.newOutputStream(result.resolve, StandardOpenOption.CREATE)) {
             assert inS != null;
@@ -54,9 +73,10 @@ public interface JarCompat {
       if (url != null) try {
         var root = Paths.get(url.toURI());
         Files.walkFileTree(root, new SimpleFileVisitor<>() {
-          @Override public FileVisitResult
+          @Override
+          public FileVisitResult
           visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            var result = preprocess(kala, out.resolve(root.relativize(file)));
+            var result = new $().preprocess(out.resolve(root.relativize(file)));
             try (var inS = Files.newInputStream(file);
                  var outS = Files.newOutputStream(result.resolve, StandardOpenOption.CREATE)) {
               f.transfer(inS, outS, result.applyTemplate);
@@ -68,20 +88,5 @@ public interface JarCompat {
         // never happens
       }
     }
-  }
-
-  private static Preprocess preprocess(String kala, Path resolve) throws IOException {
-    var parent = resolve.getParent();
-    mkdirsDashP(parent);
-    var applyTemplate = false;
-    var fileName = resolve.getFileName().toString();
-    if (fileName.endsWith(kala)) {
-      applyTemplate = true;
-      resolve = parent.resolve(fileName.replace(kala, ""));
-    }
-    return new Preprocess(resolve, applyTemplate);
-  }
-
-  record Preprocess(Path resolve, boolean applyTemplate) {
   }
 }

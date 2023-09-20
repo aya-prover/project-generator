@@ -1,4 +1,4 @@
-package org.steeleagle.psi;
+package org.{| package |}.psi;
 
 import org.aya.util.prettier.PrettierOptions;
 import org.jetbrains.annotations.NotNull;

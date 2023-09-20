@@ -1,8 +1,8 @@
-package org.steeleagle;
+package org.{| package |};
 
 import kala.collection.immutable.ImmutableSeq;
 import org.aya.intellij.GenericNode;
-import org.steeleagle.parser.BotPsiElementTypes;
+import org.steeleagle.parser.{| classPrefix |}PsiElementTypes;
 import org.steeleagle.psi.DslParserImpl;
 import org.steeleagle.psi.StreamReporter;
 

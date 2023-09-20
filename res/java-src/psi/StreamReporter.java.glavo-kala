@@ -1,4 +1,4 @@
-package org.steeleagle.psi;
+package org.{| package |}.psi;
 
 import org.aya.util.reporter.Problem;
 import org.aya.util.reporter.Reporter;

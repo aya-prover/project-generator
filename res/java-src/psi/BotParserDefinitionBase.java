@@ -1,4 +1,4 @@
-package org.steeleagle.psi;
+package org.{| package |}.psi;
 
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
@@ -7,16 +7,16 @@ import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
-import org.steeleagle.parser.BotPsiParser;
-import org.steeleagle.parser._BotPsiLexer;
+import org.{| package |}.parser.{| classPrefix |}PsiParser;
+import org.{| package |}.parser._{| classPrefix |}PsiLexer;
 
-public abstract class BotParserDefinitionBase implements ParserDefinition {
+public abstract class {| classPrefix |}ParserDefinitionBase implements ParserDefinition {
   @Override public @NotNull Lexer createLexer(Project project) {
-    return new FlexAdapter(new _BotPsiLexer());
+    return new FlexAdapter(new _{| classPrefix |}PsiLexer());
   }
 
   @Override public @NotNull PsiParser createParser(Project project) {
-    return new BotPsiParser();
+    return new {| classPrefix |}PsiParser();
   }
 
   @Override public @NotNull TokenSet getCommentTokens() {
