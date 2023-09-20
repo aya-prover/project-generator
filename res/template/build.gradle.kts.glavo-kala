@@ -5,7 +5,7 @@ plugins {
 }
 
 allprojects {
-  group = "org.steeleagle"
+  group = "org.{| package |}"
   version = "1.0"
 }
 

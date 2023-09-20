@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="glavo.kala.template" type="repository">
+    <properties maven-id="org.glavo.kala:kala-template:0.2.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/kala-template-0.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

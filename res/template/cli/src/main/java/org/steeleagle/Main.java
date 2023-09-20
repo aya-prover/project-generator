@@ -9,7 +9,7 @@ import org.steeleagle.psi.StreamReporter;
 public class Main {
   public static void main(String[] args) {
     var node = new DslParserImpl(new StreamReporter(System.out))
-        .parseNode("code goes here");
+        .parseNode("code : here");
     System.out.println(node.toDebugString());
   }
 }

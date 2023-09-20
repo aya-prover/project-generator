@@ -1,0 +1,25 @@
+{
+  // only for the compiler, not the IDE
+  generate=[
+    java='11'
+    psi-factory='no'
+    visitor='no'
+  ]
+  generatePsi=false
+
+  // we only need the parser and element types.
+  parserClass='org.{| package |}.parser.{| classPrefix |}PsiParser'
+  elementTypeHolderClass='org.{| package |}.parser.{| classPrefix |}PsiElementTypes'
+  elementTypeClass='org.{| package |}.parser.{| classPrefix |}PsiElementType'
+  tokenTypeClass='org.{| package |}.parser.{| classPrefix |}PsiTokenType'
+}
+
+file ::= ID COLON ID
+
+// meta rules
+
+// we can improve the parsing by producing generically from a 'commaSep' rule
+meta commaSep ::= <<param>> (COMMA <<param>>) *
+meta semiSep ::= <<param>> (SEMI <<param>>) *
+private meta paren ::= LPAREN <<param>> RPAREN
+private meta braced ::= LBRACE <<param>> RBRACE
