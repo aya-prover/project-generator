@@ -2,7 +2,6 @@ plugins { application }
 application.mainClass.set("org.{| package |}.Main")
 
 dependencies {
-  val deps: java.util.Properties by rootProject.ext
   api(libs.picocli)
   implementation(libs.aya.tools)
   implementation(libs.aya.ipcore)

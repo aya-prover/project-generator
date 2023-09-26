@@ -3,7 +3,7 @@ annotations = "24.0.1"
 kala = "0.67.0"
 aya = "0.29.1"
 picocli = "4.7.3"
-build-util = "0.0.17"
+build-util = "0.0.18"
 
 [libraries]
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
