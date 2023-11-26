@@ -2,9 +2,9 @@ package org.{| package |};
 
 import kala.collection.immutable.ImmutableSeq;
 import org.aya.intellij.GenericNode;
-import org.steeleagle.parser.{| classPrefix |}PsiElementTypes;
-import org.steeleagle.psi.DslParserImpl;
-import org.steeleagle.psi.StreamReporter;
+import org.{| package |}.parser.{| classPrefix |}PsiElementTypes;
+import org.{| package |}.psi.DslParserImpl;
+import org.{| package |}.psi.StreamReporter;
 
 public class Main {
   public static void main(String[] args) {
