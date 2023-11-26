@@ -29,7 +29,10 @@ class GenerateVersionTask extends DefaultTask {
       }""".stripIndent()
     outputDir.mkdirs()
     def outFile = new File(outputDir, "${className}.java")
-    if (!outFile.exists()) assert outFile.createNewFile()
+    if (!outFile.exists()) {
+      def result = outFile.createNewFile()
+      assert result
+    }
     outFile.write(code)
   }
 }

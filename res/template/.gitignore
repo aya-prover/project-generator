@@ -16,14 +16,11 @@ out/
 gradle.properties
 .DS_Store
 lombok.config
-/test.anqur
 /test.html
 /highlight-hover.js
 
 imgui.ini
 /diagram.uml
-
-test.aya
 
 idea-flex.skeleton
 jflex-*.jar

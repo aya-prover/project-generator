@@ -17,12 +17,12 @@ subprojects {
   }
   repositories { mavenCentral() }
 
-  val javaVersion = 17
+  val javaVersion = {| javaVersion |}
   java {
     withSourcesJar()
     if (hasProperty("release")) withJavadocJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_{| javaVersion |}
+    targetCompatibility = JavaVersion.VERSION_{| javaVersion |}
     toolchain {
       languageVersion.set(JavaLanguageVersion.of(javaVersion))
     }
