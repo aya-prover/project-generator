@@ -21,6 +21,6 @@ val lexer = tasks.register<JFlexTask>("lexer") {
 
 val genVer = tasks.register<GenerateVersionTask>("genVer") {
   basePackage = "org.{| package |}"
-  outputDir = file(genDir).resolve("org/{| package |}/prelude")
+  outputDir = genDir.resolve("org/{| package |}/prelude")
 }
 listOf(tasks.sourcesJar, tasks.compileJava).forEach { it.configure { dependsOn(genVer, lexer) } }
