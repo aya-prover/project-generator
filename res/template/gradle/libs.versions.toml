@@ -1,8 +1,8 @@
 [versions]
-annotations = "24.0.1"
-aya = "0.29.2"
-picocli = "4.7.4"
-build-util = "0.0.20"
+annotations = "24.1.0"
+aya = "0.30.0"
+picocli = "4.7.5"
+build-util = "0.0.21"
 
 [libraries]
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
