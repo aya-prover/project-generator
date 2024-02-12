@@ -24,7 +24,7 @@ subprojects {
     sourceCompatibility = JavaVersion.VERSION_{| javaVersion |}
     targetCompatibility = JavaVersion.VERSION_{| javaVersion |}
     toolchain {
-      languageVersion.set(JavaLanguageVersion.of(javaVersion))
+      languageVersion = JavaLanguageVersion.of(javaVersion)
     }
   }
 
@@ -39,7 +39,7 @@ subprojects {
     options.apply {
       encoding = "UTF-8"
       isDeprecation = true
-      release.set(javaVersion)
+      release = javaVersion
       compilerArgs.addAll(listOf("-Xlint:unchecked"))
     }
   }
