@@ -1,7 +1,7 @@
 package org.{| package |}.psi;
 
+import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.DefaultPsiParser;
-import com.intellij.psi.builder.FleetPsiBuilder;
 import com.intellij.psi.tree.IFileElementType;
 import org.aya.intellij.GenericNode;
 import org.aya.intellij.MarkerNodeWrapper;
@@ -28,7 +28,7 @@ public record DslParserImpl(@NotNull Reporter reporter) {
 
     private static final class {| classPrefix |}ParserDefinition extends {| classPrefix |}ParserDefinitionBase {
       private final @NotNull IFileElementType FILE = new IFileElementType({| classPrefix |}Language.INSTANCE) {
-        @Override public void parse(@NotNull FleetPsiBuilder<?> builder) {
+        @Override public void parse(@NotNull PsiBuilder builder) {
         }
       };
 
