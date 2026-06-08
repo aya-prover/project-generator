@@ -1,5 +1,6 @@
 plugins {
   java
+  `jvm-test-suite`
   idea
   `java-library`
 }
@@ -34,20 +35,30 @@ subprojects {
   }
 
   tasks.withType<JavaCompile>().configureEach {
-    modularity.inferModulePath.set(true)
-
     options.apply {
-      encoding = "UTF-8"
       isDeprecation = true
-      release = javaVersion
       compilerArgs.addAll(listOf("-Xlint:unchecked"))
     }
   }
 
-  tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-    enableAssertions = true
+  @Suppress("UnstableApiUsage")
+  testing.suites {
+    val test by getting(JvmTestSuite::class) {
+      useJUnitJupiter(rootProject.libs.versions.junit)
+      targets.all {
+        testTask.configure {
+          if (name in useJacoco) finalizedBy(tasks.jacocoTestReport)
+          jvmArgs = listOf("--enable-preview")
+          enableAssertions = true
+          reports.junitXml.mergeReruns = true
+        }
+      }
+    }
   }
 
-  tasks.withType<JavaExec>().configureEach { enableAssertions = true }
+  tasks.withType<GenerateModuleMetadata>().configureEach {
+    enabled = false
+  }
+
+  tasks.withType<JavaExec>().configureEach { jvmArgs = listOf("--enable-preview"); enableAssertions = true }
 }
