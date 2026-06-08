@@ -3,6 +3,7 @@ annotations = "26.0.2"
 aya = "0.40.0"
 picocli = "4.7.7"
 build-util = "0.0.39"
+junit = "6.1.0"
 
 [libraries]
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
