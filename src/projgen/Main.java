@@ -15,7 +15,7 @@ public class Main {
   public static final String KALA = ".glavo-kala";
   public static final String PREFIX = "Bot";
 
-  public static void main(String... args) throws IOException {
+  static void main() {
     var ui = new UI();
     var frame = new JFrame("Project Generator");
     frame.add(ui.getRoot());
