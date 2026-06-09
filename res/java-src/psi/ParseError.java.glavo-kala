@@ -1,8 +1,8 @@
 package org.{| package |}.psi;
 
 import org.aya.pretty.doc.Doc;
-import org.aya.util.error.SourcePos;
-import org.aya.util.prettier.PrettierOptions;
+import org.aya.util.position.SourcePos;
+import org.aya.util.PrettierOptions;
 import org.aya.util.reporter.Problem;
 import org.jetbrains.annotations.NotNull;
 
