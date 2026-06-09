@@ -1,6 +1,6 @@
 package org.{| package |}.psi;
 
-import org.aya.util.prettier.PrettierOptions;
+import org.aya.util.PrettierOptions;
 import org.jetbrains.annotations.NotNull;
 
 // TODO: use better one
